@@ -47,11 +47,18 @@ operations
 				
 			-- AUXILIARY FUNCTIONS --
 			
-			-- Add a show to the Venue object --
+			-- Add a show to Shows in the Venue object --
 			public addShow : Show ==> ()
 				addShow(s) == (shows := shows union {s}; return)
 				pre s not in set shows
-				post shows = shows~ union {s};
-				
-			-- TODO: Other relevant functions	
+				post shows = {s} union shows~;
+			
+		 -- Remove a show from Shows in the Venue object --
+		 public removeShow : Show ==> ()
+		 	removeShow(s) == (shows := shows \ {s}; return)
+		 	pre s in set shows
+		 	post {} = {s} inter shows;
+		 	
+		 -- TODO Add tests
+			
 end Venue

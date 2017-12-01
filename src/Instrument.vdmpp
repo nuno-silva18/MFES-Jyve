@@ -19,4 +19,6 @@ operations
 			-- Changes the name of the Instrument object --
 			public setName : String ==> ()
 				setName(n) == (name := n; return);
+				
+			-- TODO Add tests
 end Instrument

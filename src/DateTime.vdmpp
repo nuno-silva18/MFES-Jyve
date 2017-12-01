@@ -1,0 +1,125 @@
+class DateTime
+types
+
+instance variables
+			private year : nat;
+			private month : nat;
+			private day : nat;
+			private hour : nat;
+			private minutes : nat;
+operations		
+			-- Creates a new Date object given its year, month and day --
+			public DateTime: nat * nat * nat * nat * nat ==> DateTime
+	    	DateTime(y, m, d, h, min) == (year := y; month := m; day := d; hour := h; minutes := min; return self)
+	    	pre y > 0 and m > 0 and m <= 12 and d > 0 and d <= 31 and h < 24 and m < 60;
+	    
+			-- GETS --
+		
+			-- Returns the year of the Date object --
+			pure public getYear : () ==> nat
+				getYear() == (return year);	
+			
+			-- Returns the month of the Date object --
+			pure public getMonth : () ==> nat
+				getMonth() == (return month);	
+			
+			-- Returns the day of the Date object --
+			pure public getDay : () ==> nat
+				getDay() == (return day);
+
+			-- Returns the hours of the Hour object --
+			pure public getHour : () ==> nat
+				getHour() == (return hour);
+				
+			-- Returns the minutes of the Hour object --
+			pure public getMinutes : () ==> nat
+				getMinutes() == (return minutes);
+					
+
+			-- AUXILIARY FUNCTIONS --
+			
+			-- If the date of Date object is later than the one of Date d object, returns true. Will return false otherwise -- 
+			pure public laterDate : DateTime ==> bool
+				laterDate(d) == (
+					return ((year * month * day) > (d.getYear() * d.getMonth() * d.getDay()))
+				);
+				
+			-- If the date of Date object is equal to the one of Date d object, return true. Will return false otherwise --
+			pure public sameDate : DateTime ==> bool
+				sameDate(d) == (
+					return ((year * month * day) = (d.getYear() * d.getMonth() * d.getDay()))
+				);
+				
+							-- If the Hour object is later than the Hour object h, returns true. Will return false otherwise --
+			pure public laterHour : DateTime ==> bool
+				laterHour(h) == (
+					return ((hour * minutes) > (h.getHour() * h.getMinutes()))
+				);
+			
+			-- If the Hour object is equal to the Hour object h, returns true. Will return false otherwise --
+			pure public sameHour : DateTime ==> bool
+				sameHour(h) == (
+					return ((hour * minutes) = (h.getHour() * h.getMinutes()))
+				);
+				
+end DateTime
+
+-- TEST CLASS FOR DATETIME CLASS --
+-- TODO Add tests for time part of DateTime --
+
+class DateTimeTest is subclass of TestSuiteJyve
+	
+	instance variables
+		d1 : DateTime := new DateTime(2017, 12, 30, 20, 30);
+		d2 : DateTime := new DateTime(2017, 10, 30, 20, 30);
+		d3 : DateTime := new DateTime(2017, 12, 30, 20, 30);
+	operations
+		
+		private testlaterDate: () ==> ()
+	    testlaterDate() ==
+	    (
+	      assertEqual(d1.laterDate(d2), true);
+	      assertEqual(d2.laterDate(d1), false);
+	    );
+	    
+	  private testsameDate: () ==> ()
+	  	testsameDate() ==
+	  	(
+	  		assertEqual(d1.sameDate(d3), true);
+	  		assertEqual(d1.sameDate(d2), false);
+	  	);
+	    
+	  -- START GETS --
+	  private testGetYear: () ==> ()
+	    testGetYear() ==
+	    (
+	      assertEqual(d1.getYear(), 2017);
+	      assertEqual(d2.getYear(), 2017);
+	    );
+	  private testGetMonth: () ==> ()
+	    testGetMonth() ==
+	    (
+	      assertEqual(d1.getMonth(), 12);
+	      assertEqual(d2.getMonth(), 10);
+	    );
+	  private testGetDay: () ==> ()
+	    testGetDay() ==
+	    (
+	      assertEqual(d1.getDay(), 30);
+	      assertEqual(d2.getDay(), 30);
+	    );
+	    
+	  -- END GETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl test : DateTimeTest := new DateTimeTest();
+        test.testlaterDate();
+        test.testsameDate();
+	      test.testGetYear();
+	      test.testGetMonth();
+	      test.testGetDay();
+	    );
+		
+end DateTimeTest

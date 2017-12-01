@@ -1,0 +1,53 @@
+class TestSuiteJyve
+operations
+			-- Simulates assertion checking by reducing it to pre-condition checking.
+			-- If 'arg' does not hold, a pre-condition violation will be signaled.
+			protected assertTrue: bool ==> ()
+				assertTrue(arg) == 
+			return 
+			pre arg;
+			
+			-- Simulates assertion checking by reducing it to post-condition checking.
+			-- If values are not equal, prints a message in the console and generates 
+			-- a post-conditions violation.
+			protected assertEqual: ? * ? ==> ()
+				assertEqual(expected, actual) == 
+				if expected <> actual then (
+  				IO`print("Actual value (");
+  				IO`print(actual); 
+  				IO`print(") different from:\n");
+  				IO`print("expected (");
+  				IO`print(expected);
+  				IO`println(")\n")
+				)
+				post expected = actual  
+end TestSuiteJyve
+
+class TestJyve
+instance variables
+			--a : ArtistTest := new ArtistTest();
+			--b : BandTest := new BandTest();
+			d : DateTimeTest := new DateTimeTest();
+			--g : GenreTest := new GenreTest();
+			--h : HourTest := new HourTest();
+			--i : InstrumentTest := new InstrumentTest();
+			--l : LocationTest := new LocationTest();
+			--m : MusicTest := new MusicTest();
+			--s : ShowTest := new ShowTest();
+			--v : VenueTest := new VenueTest();	
+operations
+		public static main: () ==> ()
+	    main() ==
+	    (
+	    	--a.main();
+	    	--b.main();
+	    	new DateTimeTest().main();
+	    	--g.main();
+	    	--h.main();
+	    	--i.main();
+	    	--l.main();
+	    	--m.main();
+	    	--s.main();
+	    	--v.main();
+	    );
+end TestJyve

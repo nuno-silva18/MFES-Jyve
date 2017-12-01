@@ -1,0 +1,115 @@
+class Jyve
+types
+			public String = seq of char;
+instance variables
+			-- Every artist on Jyve --
+			private artists : set of Artist := {};
+			
+			-- Every band on Jyve --
+			private bands : set of Band := {};
+			
+			-- Every venue on Jyve --
+			private venues : set of Venue := {};
+			
+			-- Every show on Jyve --
+			private shows : set of Show := {};
+operations
+
+			-- GETS --
+			
+			-- Returns all the artists on Jyve --
+			public getArtists : () ==> set of Artist
+				getArtists() == (return artists);
+				
+			-- Returns all the bands on Jyve --
+			public getBands : () ==> set of Band
+				getBands() == (return bands);
+				
+			-- Returns all the venues on Jyve --
+			public getVenues : () ==> set of Venue
+				getVenues() == (return venues);
+				
+			-- Returns all the shows on Jyve --
+			public getShows : () ==> set of Show
+				getShows() == (return shows);
+				
+			-- AUXILIARY FUNCTIONS --
+			
+			-- Add an artist to Jyve --
+			public addArtist: Artist ==> ()
+				addArtist(a) == artists := {a} union artists
+				pre a not in set artists
+				post artists = {a} union artists~;
+				
+			-- Add a band to Jyve --
+			public addBand: Band ==> ()
+				addBand(b) == bands := {b} union bands
+				pre b not in set bands
+				post bands = {b} union bands~;
+				
+			-- Add a venue to Jyve --
+			public addVenue : Venue ==> ()
+				addVenue(v) == venues := {v} union venues
+				pre v not in set venues
+				post venues = {v} union venues~;
+				
+			-- Add a show to Jyve --
+			public addShow : Show ==> ()
+				addShow(s) == shows := {s} union shows
+				pre s not in set shows
+				post shows = {s} union shows~;
+				
+			-- Search for an artist on Jyve --
+			-- Receives a string and returns the Artist object with the name or description equal to the string. --
+			public searchArtist: String ==> set of Artist
+			searchArtist(sa)==
+			(
+				dcl res: set of Artist:= {};
+					for all a in set artists do
+						if (a.getName() = sa or a.getDescription() = sa)
+							then (res:= {a} union res);
+				return res			
+			)
+			pre sa <> [];
+			
+			-- Search for a band on Jyve --
+			-- Receives a string and returns the Band object with the name or description equal to the string. --
+			public searchBand: String ==> set of Band
+			searchBand(sb)==
+			(
+				dcl res: set of Band:= {};
+					for all b in set bands do
+						if (b.getName() = sb or b.getDescription() = sb)
+							then (res:= {b} union res);
+				return res			
+			)
+			pre sb <> [];
+			
+			-- Search for a venue on Jyve --
+			-- Receives a string and returns the Venue object with the name or description equal to the string. --
+			public searchVenue: String ==> set of Venue
+			searchVenue(sv)==
+			(
+				dcl res: set of Venue:= {};
+					for all v in set venues do
+						if (v.getName() = sv or v.getDescription() = sv)
+							then (res:= {v} union res);
+				return res			
+			)
+			pre sv <> [];
+			
+			-- Search for a show on Jyve --
+			-- Receives a string and returns the Show object with the name or description equal to the string. --
+			public searchShow: String ==> set of Show
+			searchShow(ss)==
+			(
+				dcl res: set of Show:= {};
+					for all s in set shows do
+						if (s.getDescription() = ss)
+							then (res:= {s} union res);
+				return res			
+			)
+			pre ss <> [];
+			
+			-- TODO Add tests
+end Jyve

@@ -3,7 +3,7 @@ types
 			public String = seq of char;
 instance variables
 			private name : String;
-			private location : [Location];
+			private location : Location;
 			private description : String;
 			private genres : set of Genre;
 			private members : set of Artist;
@@ -11,9 +11,9 @@ instance variables
 			private shows : set of Show := {};
 operations
 			-- Create a new Band with all given parameters
-			public Band: String * [Location] * String * set of Genre * set of Artist ==> Band
+			public Band: String * Location * String * set of Genre * set of Artist ==> Band
 				Band(n, l, d, setg, seta) == (name := n; location := l; description := d; genres := setg; members := seta)
-				pre n <> [] and l <> nil and seta <> {};
+				pre n <> [] and seta <> {};
 				
 				-- GETS --
 				
@@ -22,7 +22,7 @@ operations
 					getName() == (return name);
 					
 				-- Returns the location of the Band object --
-				public getLocation : () ==> [Location]
+				public getLocation : () ==> Location
 					getLocation() == (return location);
 					
 				-- Returns the description of the Band object --
@@ -52,14 +52,77 @@ operations
 					setName(n) == (name := n; return);
 				
 				-- Changes the location of the Band object --
-				public setLocation : [Location] ==> ()
+				public setLocation : Location ==> ()
 					setLocation(l) == (location := l; return);
 				
 				-- Changes the description of the Band object --
 				public setDescription : String ==> ()
 					setDescription(d) == (description := d; return);
 				
-			-- AUXILIARY FUNCTIONS --	
-			-- TODO Add/remove musics, create and add/cancel show, add/remove genres, add/remove members
+			-- AUXILIARY FUNCTIONS --
+			
+			-- Add a music to Musics in an Band object --
+			public addMusic : Music ==> ()
+				addMusic(m) == musics := {m} union musics
+				pre m not in set musics
+				post musics = {m} union musics~;
+			
+			-- Add an Artist to members in a Band object --
+			public addMember : Artist ==> ()
+				addMember(a) == members := {a} union members
+				pre a not in set members
+				post members = {a} union members~;
+				
+			-- Add a genre to Genres in a Band object --
+			public addGenre : Genre ==> ()
+				addGenre(g) == genres := {g} union genres
+				pre (g not in set genres) and (card genres < 5)
+				post genres = {g} union genres~;
+				
+			-- Add a show to Shows in a Band object --
+			public addShow : DateTime * DateTime * Venue * String ==> bool
+				addShow(dts, dte, v, des) == (
+					dcl nshow : Show := new Show(dts, dte, v, self, des);
+					for all s in set shows do
+					(
+						if((dts.sameHour(s.getStartDate()) = true) and (dts.sameDate(s.getStartDate()) = true))
+							then return false;
+					);
+					shows := {nshow} union shows;
+					v.addShow(nshow);
+					return true
+				);
+
+			-- REMOVES --
+			
+			-- Removes a music from Musics in an Band object --
+			public removeMusic : Music ==> ()
+				removeMusic(m) == (musics := musics \ {m}; return)
+				pre m in set musics
+				post {} = {m} inter musics;
+				
+			-- Removes an Artist from Members in a Band object --
+			public removeMembers : Artist ==> ()
+				removeMembers(a) == (members := members \ {a}; return)
+				pre a in set members
+				post {} = {a} inter members;
+				
+			-- Removes a genre from Genres in a Band object --
+			public removeGenre : Genre ==> ()
+				removeGenre(g) == (genres := genres \ {g}; return)
+				pre g in set genres
+				post {} = {g} inter genres;
+				
+			-- Removes a show from Shows in a Band object --
+			public removeShow : Show * Venue ==> ()
+				removeShow(s, v) == (
+					shows := shows \ {s};
+					v.removeShow(s);
+					return
+				)
+				pre s in set shows
+				post {} = {s} inter shows;
+				
+				-- TODO Add tests
 			
 end Band

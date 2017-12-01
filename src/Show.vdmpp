@@ -1,54 +1,55 @@
 class Show
 types
-			public String = set of char;
+			public String = seq of char;
 instance variables
-			private date : [Date];
-			private hour : [Hour];
-			private venue : [Venue];
-			private performersA: set of Artist;
-			private performersB: set of Band;
+			private startdate : DateTime;
+			private enddate : DateTime;
+			private venue : Venue;
+			private performerA: Artist;
+			private performerB: Band;
 			private description : String;
 			
 operations
-			-- Create a Show object with all given parameters --
-			public Show : [Date] * [Hour] * [Venue] * set of Artist * set of Band * String ==> Show
-				Show(d, h, v, pA, pB, desc) == (date := d; hour := h; venue := v; performersA := pA; performersB := pB; description := desc; return self);
+			-- Create a Show object with all given parameters for an Artist --
+			public Show : DateTime * DateTime * Venue * Artist * String ==> Show
+				Show(dts, dte, v, pA, desc) == (startdate := dts; enddate := dte; venue := v; performerA := pA; description := desc; return self);
 
+				-- Create a Show object with all given parameters for a Band --
+			public Show : DateTime * DateTime * Venue * Band * String ==> Show
+				Show(dts, dte, v, pB, desc) == (startdate := dts; enddate := dte; venue := v; performerB := pB; description := desc; return self);
+			
 			-- GETS --
 			
-			-- Returns the date of the Show object --
-			public getDate : () ==> [Date]
-				getDate() == (return date);
-			
-			-- Returns the hour of the Show object --
-			public getHour : () ==> [Hour]
-				getHour() == (return hour);
+			-- Returns the start date and time of the Show object --
+			public getStartDate : () ==> DateTime
+				getStartDate() == (return startdate);
+				
+			-- Returns the end hour of the Show object --
+			public getEndDate : () ==> DateTime
+				getEndDate() == (return enddate);
 			
 			-- Returns the venue of the Show object --
-			public getVenue : () ==> [Venue]
+			public getVenue : () ==> Venue
 				getVenue() == (return venue);
 			
-			-- Returns the artists performing for the Show object --
-			public getArtists : () ==> set of Artist
-				getArtists() == (return performersA);
+			-- Returns the artist performing for the Show object --
+			public getArtist : () ==> Artist
+				getArtist() == (return performerA);
 			
-			-- Returns the bands performing for the Show object --
-			public getBands : () ==> set of Band
-				getBands() == (return performersB);
+			-- Returns the band performing for the Show object --
+			public getBand : () ==> Band
+				getBand() == (return performerB);
 				
 			-- Returns the description of the Show object --
 			public getDescription : () ==> String
 				getDescription() == (return description);
 				
 			-- SETS --
-			
+				
 			-- Changes the description of the Show object --
 			public setDescription : String ==> ()
 				setDescription(d) == (description := d; return);
-				
-			-- AUXILIARY FUNCTIONS --
 			
-			-- TODO Change and update hour and date of the show through Venue;
-			-- TODO Add and remove artists/bands
+			-- TODO: Tests 
 				
 end Show

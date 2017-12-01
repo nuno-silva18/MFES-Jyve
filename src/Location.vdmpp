@@ -29,4 +29,6 @@ operations
 			-- Changes the name of the state in the Location object --
 			public setState : String ==> ()
 				setState(s) == (state := s; return);
+				
+			-- TODO Add tests
 end Location
