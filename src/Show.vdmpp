@@ -1,0 +1,54 @@
+class Show
+types
+			public String = set of char;
+instance variables
+			private date : [Date];
+			private hour : [Hour];
+			private venue : [Venue];
+			private performersA: set of Artist;
+			private performersB: set of Band;
+			private description : String;
+			
+operations
+			-- Create a Show object with all given parameters --
+			public Show : [Date] * [Hour] * [Venue] * set of Artist * set of Band * String ==> Show
+				Show(d, h, v, pA, pB, desc) == (date := d; hour := h; venue := v; performersA := pA; performersB := pB; description := desc; return self);
+
+			-- GETS --
+			
+			-- Returns the date of the Show object --
+			public getDate : () ==> [Date]
+				getDate() == (return date);
+			
+			-- Returns the hour of the Show object --
+			public getHour : () ==> [Hour]
+				getHour() == (return hour);
+			
+			-- Returns the venue of the Show object --
+			public getVenue : () ==> [Venue]
+				getVenue() == (return venue);
+			
+			-- Returns the artists performing for the Show object --
+			public getArtists : () ==> set of Artist
+				getArtists() == (return performersA);
+			
+			-- Returns the bands performing for the Show object --
+			public getBands : () ==> set of Band
+				getBands() == (return performersB);
+				
+			-- Returns the description of the Show object --
+			public getDescription : () ==> String
+				getDescription() == (return description);
+				
+			-- SETS --
+			
+			-- Changes the description of the Show object --
+			public setDescription : String ==> ()
+				setDescription(d) == (description := d; return);
+				
+			-- AUXILIARY FUNCTIONS --
+			
+			-- TODO Change and update hour and date of the show through Venue;
+			-- TODO Add and remove artists/bands
+				
+end Show

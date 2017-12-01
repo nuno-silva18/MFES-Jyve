@@ -1,0 +1,57 @@
+class Venue
+types
+			public String = seq of char;
+instance variables
+			private name : String;
+			private location : [Location];
+			private description : String;
+			private shows: set of Show := {};
+operations
+			
+			-- Create a Venue object with all given parameters --
+			public Venue: String * [Location] * String ==> Venue
+				Venue(n, l, d) == (name := n; location := l; description := d; return self)
+				pre n <> [] and l <> nil;
+			
+			-- GETS --
+			
+			-- Returns the name of the Venue object --
+			public getName : () ==> String
+				getName() == (return name);
+				
+			-- Returns the location of the Venue object --
+			public getLocation : () ==> [Location]
+				getLocation() == (return location);
+			
+			-- Returns the description of the Venue object --
+			public getDescription : () ==> String
+				getDescription() == (return description);
+				
+			-- Returns the shows of the Venue object --
+			public getShows : () ==> set of Show
+				getShows() == (return shows);
+				
+			-- SETS --
+			
+			-- Changes the name of the Venue object --
+			public setName : String ==> ()
+				setName(n) == (name := n; return);
+				
+			-- Changes the location of the Venue object --
+			public setLocation : [Location] ==> ()
+				setLocation(l) == (location := l; return);
+				
+			-- Changes the description of the Venue object --
+			public setDescription : String ==> ()
+				setDescription(d) == (description := d; return);
+				
+			-- AUXILIARY FUNCTIONS --
+			
+			-- Add a show to the Venue object --
+			public addShow : Show ==> ()
+				addShow(s) == (shows := shows union {s}; return)
+				pre s not in set shows
+				post shows = shows~ union {s};
+				
+			-- TODO: Other relevant functions	
+end Venue

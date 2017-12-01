@@ -1,0 +1,65 @@
+class Artist
+types
+			public String = seq of char;
+instance variables
+			private name : String;
+			private location : [Location];
+			private description : String;
+			private genres : set of Genre;
+			private instruments : set of Instrument;
+			private musics : set of Music := {};
+			private shows : set of Show := {};
+operations
+			-- Create a new Artist with all given parameters
+			public Artist: String * [Location] * String * set of Genre * set of Instrument ==> Artist
+				Artist(n, l, d, setg, seti) == (name := n; location := l; description := d; genres := setg; instruments := seti)
+				pre n <> [] and l <> nil and seti <> {};
+				
+				-- GETS --
+				
+				-- Returns the name of the Artist object --
+				public getName : () ==> String
+					getName() == (return name);
+					
+				-- Returns the location of the Artist object --
+				public getLocation : () ==> [Location]
+					getLocation() == (return location);
+					
+				-- Returns the description of the Artist object --
+				public getDescription : () ==> String
+					getDescription() == (return description);
+					
+				-- Returns the genres of the Artist object --
+				public getGenres : () ==> set of Genre
+					getGenres() == (return genres);
+					
+				-- Returns the members of the Artist object --
+				public getInstruments : () ==> set of Instrument
+					getInstruments() == (return instruments);
+					
+				-- Returns the musics of the Artist object --
+				public getMusics : () ==> set of Music
+					getMusics() == (return musics);
+					
+				-- Returns the shows of the Artist object --
+				public getShows : () ==> set of Show
+					getShows() == (return shows);
+					
+				-- SETS -- 
+				
+				-- Changes the name of the Artist object --
+				public setName : String ==> ()
+					setName(n) == (name := n; return);
+				
+				-- Changes the location of the Artist object --
+				public setLocation : [Location] ==> ()
+					setLocation(l) == (location := l; return);
+				
+				-- Changes the description of the Artist object --
+				public setDescription : String ==> ()
+					setDescription(d) == (description := d; return);
+				
+			-- AUXILIARY FUNCTIONS --	
+			-- TODO Add/remove musics, create and add/cancel show, add/remove genres, add/remove members
+			
+end Artist

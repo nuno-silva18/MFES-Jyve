@@ -1,0 +1,65 @@
+class Band
+types
+			public String = seq of char;
+instance variables
+			private name : String;
+			private location : [Location];
+			private description : String;
+			private genres : set of Genre;
+			private members : set of Artist;
+			private musics : set of Music := {};
+			private shows : set of Show := {};
+operations
+			-- Create a new Band with all given parameters
+			public Band: String * [Location] * String * set of Genre * set of Artist ==> Band
+				Band(n, l, d, setg, seta) == (name := n; location := l; description := d; genres := setg; members := seta)
+				pre n <> [] and l <> nil and seta <> {};
+				
+				-- GETS --
+				
+				-- Returns the name of the Band object --
+				public getName : () ==> String
+					getName() == (return name);
+					
+				-- Returns the location of the Band object --
+				public getLocation : () ==> [Location]
+					getLocation() == (return location);
+					
+				-- Returns the description of the Band object --
+				public getDescription : () ==> String
+					getDescription() == (return description);
+					
+				-- Returns the genres of the Band object --
+				public getGenres : () ==> set of Genre
+					getGenres() == (return genres);
+					
+				-- Returns the members of the Band object --
+				public getMembers : () ==> set of Artist
+					getMembers() == (return members);
+					
+				-- Returns the musics of the Band object --
+				public getMusics : () ==> set of Music
+					getMusics() == (return musics);
+					
+				-- Returns the shows of the Band object --
+				public getShows : () ==> set of Show
+					getShows() == (return shows);
+					
+				-- SETS -- 
+				
+				-- Changes the name of the Band object --
+				public setName : String ==> ()
+					setName(n) == (name := n; return);
+				
+				-- Changes the location of the Band object --
+				public setLocation : [Location] ==> ()
+					setLocation(l) == (location := l; return);
+				
+				-- Changes the description of the Band object --
+				public setDescription : String ==> ()
+					setDescription(d) == (description := d; return);
+				
+			-- AUXILIARY FUNCTIONS --	
+			-- TODO Add/remove musics, create and add/cancel show, add/remove genres, add/remove members
+			
+end Band

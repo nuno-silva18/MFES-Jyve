@@ -1,0 +1,32 @@
+class Location
+types
+			public String = seq of char;
+instance variables
+			private city : String;
+			private state : String;
+operations
+			-- Create a new Location object with all necessary parameters --
+			public Location: String * String ==> Location
+				Location(c, s) == (city := c; state := s; return self)
+			pre c <> [] and s <> [];	
+		
+			-- GETS --
+		
+			-- Returns the name of the city in the Location object --
+			public getCity : () ==> String
+				getCity() == (return city);
+				
+			-- Return the name of the state in the Location object --
+			public getState : () ==> String
+				getState() == (return state);
+
+			-- SETS --
+			
+			-- Changes the name of the city in the Location object --
+			public setCity : String ==> ()
+				setCity(c) == (city := c; return);
+			
+			-- Changes the name of the state in the Location object --
+			public setState : String ==> ()
+				setState(s) == (state := s; return);
+end Location

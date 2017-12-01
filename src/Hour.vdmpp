@@ -1,0 +1,34 @@
+class Hour
+types
+
+instance variables
+			private hours: nat;
+			private minutes: nat;
+operations
+			-- Creates a new Hour object given an hour and minutes --
+			public Hour: nat * nat ==> Hour
+				Hour(h, m) == (hours := h; minutes := m; return self)
+				pre h <= 23 and m <= 60;
+				
+			-- GETS --
+			
+			-- Returns the hours of the Hour object --
+			pure public getHours : () ==> nat
+				getHours() == (return hours);
+				
+			-- Returns the minutes of the Hour object --
+			pure public getMinutes : () ==> nat
+				getMinutes() == (return minutes);
+			
+			-- If the Hour object is later than the Hour object h, returns true. Will return false otherwise --
+			pure public laterHour : Hour ==> bool
+				laterHour(h) == (
+					return ((hours * minutes) > (h.getHours() * h.getMinutes()))
+				);
+			
+			-- If the Hour object is equal to the Hour object h, returns true. Will return false otherwise --
+			pure public sameHour : Hour ==> bool
+				sameHour(h) == (
+					return ((hours * minutes) = (h.getHours() * h.getMinutes()))
+				);
+end Hour
