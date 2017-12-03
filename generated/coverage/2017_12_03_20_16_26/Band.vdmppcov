@@ -1,0 +1,288 @@
+class Band
+	types
+			public String = seq of char;
+
+	instance variables
+			private name : String;
+			private location : [Location];
+			private description : String;
+			private genres : set of String;
+			private members : set of Artist;
+			private musics : set of String := {};
+			private shows : set of Show := {};
+			
+			inv location <> nil;
+			inv members <> {};
+
+	operations
+			-- Create a new Band with all given parameters
+			public Band: String * Location * String * set of String * set of Artist ==> Band
+				Band(n, l, d, setg, seta) == (name := n; location := l; description := d; genres := setg; members := seta)
+				pre n <> [] and seta <> {};
+				
+				-- GETS --
+				
+				-- Returns the name of the Band object --
+				public getName : () ==> String
+					getName() == (return name);
+					
+				-- Returns the location of the Band object --
+				public getLocation : () ==> Location
+					getLocation() == (return location);
+					
+				-- Returns the description of the Band object --
+				public getDescription : () ==> String
+					getDescription() == (return description);
+					
+				-- Returns the genres of the Band object --
+				public getGenres : () ==> set of String
+					getGenres() == (return genres);
+					
+				-- Returns the members of the Band object --
+				public getMembers : () ==> set of Artist
+					getMembers() == (return members);
+					
+				-- Returns the musics of the Band object --
+				public getMusics : () ==> set of String
+					getMusics() == (return musics);
+					
+				-- Returns the shows of the Band object --
+				public getShows : () ==> set of Show
+					getShows() == (return shows);
+					
+				-- SETS -- 
+				
+				-- Changes the name of the Band object --
+				public setName : String ==> ()
+					setName(n) == (name := n; return);
+				
+				-- Changes the location of the Band object --
+				public setLocation : Location ==> ()
+					setLocation(l) == (location := l; return);
+				
+				-- Changes the description of the Band object --
+				public setDescription : String ==> ()
+					setDescription(d) == (description := d; return);
+				
+				-- AUXILIARY FUNCTIONS --
+			
+				-- Add a music to Musics in a Band object --
+				public addMusic : String ==> ()
+					addMusic(m) == musics := {m} union musics
+					pre m not in set musics
+					post musics = {m} union musics~;
+			
+				-- Add an artist to members in a Band object --
+				public addMember : Artist ==> ()
+					addMember(a) == members := {a} union members
+					pre a not in set members
+					post members = {a} union members~;
+				
+				-- Add a genre to Genres in a Band object --
+				public addGenre : String ==> ()
+					addGenre(g) == genres := {g} union genres
+					pre (g not in set genres) and (card genres < 5)
+					post genres = {g} union genres~;
+				
+				-- Add a show to Shows in a Band object --
+				public addShow : Show ==> bool
+					addShow(nshow) == (
+						for all s in set shows do
+						(
+							if(nshow.getEndDate().laterTime(s.getStartDate()) and s.getEndDate().laterTime(nshow.getStartDate()))
+								then return false;
+						);
+						shows := {nshow} union shows;
+						nshow.getVenue().addShow(nshow);
+						return true
+					);
+
+				-- REMOVES --
+			
+				-- Removes a music from Musics in a Band object --
+				public removeMusic : String ==> ()
+					removeMusic(m) == (musics := musics \ {m}; return)
+					pre m in set musics
+					post {} = {m} inter musics;
+				
+				-- Removes an Artist from Members in a Band object --
+				public removeMember : Artist ==> ()
+					removeMember(a) == (members := members \ {a}; return)
+					pre a in set members and card members > 1
+					post {} = {a} inter members;
+				
+				-- Removes a genre from Genres in a Band object --
+				public removeGenre : String ==> ()
+					removeGenre(g) == (genres := genres \ {g}; return)
+					pre g in set genres
+					post {} = {g} inter genres;
+				
+				-- Removes a show from Shows in a Band object --
+				public removeShow : Show ==> ()
+					removeShow(s) == (
+						shows := shows \ {s};
+						s.getVenue().removeShow(s);
+						return
+					)
+					pre s in set shows
+					post {} = {s} inter shows;
+
+end Band
+
+-- TEST CLASS FOR BAND CLASS --
+				
+class BandTest is subclass of TestSuiteJyve
+	instance variables
+			d1 : DateTime := new DateTime(2017, 12, 01, 23, 30);
+			d2 : DateTime := new DateTime(2017, 12, 02, 04, 00);
+			d3 : DateTime := new DateTime(2017, 12, 01, 23, 45);
+			d4 : DateTime := new DateTime(2017, 12, 02, 03, 30);
+			l1 : Location := new Location("New York", "New York");
+			l2 : Location := new Location("Illinois", "Chicago");
+			a1 : Artist := new Artist("Father John Misty", l1, "Too cool for descriptions.", {}, {});
+			a2 : Artist := new Artist("St. Vincent", l1, "Coolio", {}, {});
+			b1 : Band := new Band("Father John Misty's Band", l1, "Cool band.", {"Indie"}, {a1});
+			b2 : Band := new Band("Superband", l1, "Super band with two awesome people!", {}, {a2});
+			v1 : Venue := new Venue("The Den", l1, "Cool place to chill.");
+			s1 : Show := new Show(d1, d2, v1, "Concert up buds!");
+			s2 : Show := new Show(d3, d4, v1, "Concert down buds!");
+			
+	operations
+			-- ADDS --
+			private testaddMusic: () ==> ()
+				testaddMusic() == (
+					b1.addMusic("I Love You, Honeybear");
+					b2.addMusic("Pure Comedy");
+				);
+			
+			private testaddGenre: () ==> ()
+				testaddGenre() == (
+					b1.addGenre("Pop");
+					b2.addGenre("Indie");
+				);
+				
+			private testaddMember: () ==> ()
+				testaddMember() == (
+					b1.addMember(a2);
+					b2.addMember(a1);
+				);
+				
+			private testaddShow: () ==> ()
+				testaddShow() == (
+					assertEqual(b1.addShow(s1), true);
+					assertEqual(b1.addShow(s2), false);
+					assertEqual(b2.addShow(s2), true);
+				);
+			
+			-- GETS --
+			private testgetName: () ==> ()
+				testgetName() == (
+					assertEqual(b1.getName(), "Father John Misty's Band");
+					assertEqual(b2.getName(), "Superband");
+				);
+			
+			private testgetLocation: () ==> ()
+				testgetLocation() == (
+					assertEqual(b1.getLocation(), l1);
+					assertEqual(b2.getLocation(), l1);
+				);
+			
+			private testgetDescription: () ==> ()
+				testgetDescription() == (
+					assertEqual(b1.getDescription(), "Cool band.");
+					assertEqual(b2.getDescription(), "Super band with two awesome people!");
+				);
+			
+			private testgetGenres: () ==> ()
+				testgetGenres() == (
+					assertEqual(b1.getGenres(), {"Indie", "Pop"});
+					assertEqual(b2.getGenres(), {"Indie"});
+				);	
+			
+			private testgetMembers: () ==> ()
+				testgetMembers() == (
+					assertEqual(b1.getMembers(), {a1, a2});
+					assertEqual(b2.getMembers(), {a1, a2});
+				);
+				
+			private testgetMusics: () ==> ()
+				testgetMusics() == (
+					assertEqual(b1.getMusics(), {"I Love You, Honeybear"});
+					assertEqual(b2.getMusics(), {"Pure Comedy"});
+				);
+			 
+			private testgetShows: () ==> ()
+				testgetShows() == (
+					assertEqual(b1.getShows(), {s1});
+					assertEqual(b2.getShows(), {s2});
+				);
+				
+			-- SETS --
+			private testsetName: () ==> ()
+				testsetName() == (
+					b1.setName("Nuno Silva and the MFES band");
+					b2.setName("Mário Esteves and the weebs band");
+				);
+			
+			private testsetLocation: () ==> ()
+				testsetLocation() == (
+					b1.setLocation(l2);
+					b2.setLocation(l2);
+				);
+			
+			private testsetDescription: () ==> ()
+				testsetDescription() == (
+					b1.setDescription("Best band on Earth");
+					b2.setDescription("Massive weeb band");
+				);
+				
+			-- REMOVE --
+			private testremoveMusic: () ==> ()
+				testremoveMusic() == (
+					b1.removeMusic("I Love You, Honeybear");
+					b2.removeMusic("Pure Comedy");
+				);
+			
+			private testremoveMember: () ==> ()
+				testremoveMember() == (
+					b1.removeMember(a2);
+					b2.removeMember(a1);
+				);
+			
+			private testremoveGenre: () ==> ()
+				testremoveGenre() == (
+					b1.removeGenre("Pop");
+					b2.removeGenre("Indie");
+				);
+			
+			private testremoveShow: () ==> ()
+				testremoveShow() == (
+					b1.removeShow(s1);
+					b2.removeShow(s2);
+				);
+			
+			public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl test : BandTest := new BandTest();
+        test.testaddMusic();
+        test.testaddMember();
+        test.testaddGenre();
+        test.testaddShow();
+        test.testgetName();
+	      test.testgetLocation();
+	      test.testgetDescription();
+	      test.testgetGenres();
+	      test.testgetMembers();
+	      test.testgetMusics();
+	      test.testgetShows();
+	      test.testsetName();
+	      test.testsetLocation();
+	      test.testsetDescription();
+	      test.testremoveMusic();
+	      test.testremoveMember();
+	      test.testremoveGenre();
+	      test.testremoveShow();
+	    );
+	
+end BandTest
