@@ -744,8 +744,9 @@ public class Menu {
 		else {
 			System.out.println("The application doesn't have any venues and, thus, no shows yet :(");
 		}
-	
+		
 		System.out.println("To continue please insert the number corresponding to the menu option followed by Enter:");
+		System.out.println("Average number of shows per artist/band on Jyve: " + jyve.avgShowPerArtistBand());
 		System.out.println("0. Return to main menu");
 		
 		int tempState = scan.nextInt();

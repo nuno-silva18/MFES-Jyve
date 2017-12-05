@@ -12,6 +12,8 @@ class Artist
 			private shows : set of Show := {};
 			
 			inv location <> nil;
+			inv card genres < 6;
+			inv card instruments < 6;
 
 	operations
 			-- Create a new Artist with all given parameters
@@ -92,7 +94,7 @@ class Artist
 			-- Add a genre to Genres in an Artist object --
 			public addGenre : String ==> ()
 				addGenre(g) == genres := {g} union genres
-				pre (g not in set genres) and (card genres < 5)
+				pre g not in set genres
 				post genres = {g} union genres~;
 				
 			-- Add a show to Shows in an Artist object --

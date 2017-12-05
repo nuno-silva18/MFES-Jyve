@@ -170,6 +170,31 @@ public class Jyve {
     return Utils.copy(res);
   }
 
+  public Number avgShowPerArtistBand() {
+
+    Number nshows = 0L;
+    Boolean b = false;
+    Number tartb = 0L;
+    for (Iterator iterator_17 = artists.iterator(); iterator_17.hasNext(); ) {
+      Artist a = (Artist) iterator_17.next();
+      b = true;
+      nshows = nshows.longValue() + a.getShows().size();
+      tartb = tartb.longValue() + 1L;
+    }
+    for (Iterator iterator_18 = bands.iterator(); iterator_18.hasNext(); ) {
+      Band band = (Band) iterator_18.next();
+      b = true;
+      nshows = nshows.longValue() + band.getShows().size();
+      tartb = tartb.longValue() + 1L;
+    }
+    if (!(b)) {
+      return -1L;
+
+    } else {
+      return Utils.divide((1.0 * nshows.longValue()), tartb.longValue());
+    }
+  }
+
   public Jyve() {}
 
   public String toString() {

@@ -115,6 +115,11 @@ public class JyveTest extends TestSuiteJyve {
     assertEqual(j.searchShow("Concert down buds!"), SetUtil.set(s2));
   }
 
+  private void testavgShowPerArtistBand() {
+
+    assertEqual(j.avgShowPerArtistBand(), 0.5);
+  }
+
   public static void main() {
 
     JyveTest test = new JyveTest();
@@ -132,6 +137,7 @@ public class JyveTest extends TestSuiteJyve {
     test.testsearchBand();
     test.testsearchVenue();
     test.testsearchShow();
+    test.testavgShowPerArtistBand();
   }
 
   public JyveTest() {}
