@@ -1,0 +1,305 @@
+class Artist
+	types
+			public String = seq of char;
+
+	instance variables
+			private name : String;
+			private location : [Location];
+			private description : String;
+			private genres : set of String;
+			private instruments : set of String;
+			private musics : set of String := {};
+			private shows : set of Show := {};
+			
+			inv location <> nil;
+
+	operations
+			-- Create a new Artist with all given parameters
+			public Artist: String * Location * String * set of String * set of String ==> Artist
+				Artist(n, l, d, setg, seti) == (name := n; location := l; description := d; genres := setg; instruments := seti)
+				pre n <> [];
+				
+				-- GETS --
+				
+				-- Returns the name of the Artist object --
+				public getName : () ==> String
+					getName() == (return name);
+					
+				-- Returns the location of the Artist object --
+				public getLocation : () ==> Location
+					getLocation() == (return location);
+					
+				-- Returns the description of the Artist object --
+				public getDescription : () ==> String
+					getDescription() == (return description);
+					
+				-- Returns the genres of the Artist object --
+				public getGenres : () ==> set of String
+					getGenres() == (return genres);
+					
+				-- Returns the instruments of the Artist object --
+				public getInstruments : () ==> set of String
+					getInstruments() == (return instruments);
+					
+				-- Returns the musics of the Artist object --
+				public getMusics : () ==> set of String
+					getMusics() == (return musics);
+					
+				-- Returns the shows of the Artist object --
+				public getShows : () ==> set of Show
+					getShows() == (return shows);
+					
+				-- Returns a show of the Artist object by the name of the venue, date and starting time --
+				public getShow : String * nat * nat * nat * nat * nat ==> [Show]
+					getShow(vn, sy, sm, sd, stime, sminutes) == (
+						for all s in set shows do
+							if(s.getVenue().getName() = vn and s.getStartDate().getYear() = sy and s.getStartDate().getMonth() = sm and s.getStartDate().getDay() = sd 
+							and s.getStartDate().getHour() = stime and s.getStartDate().getMinutes() = sminutes)
+								then return s;
+						return nil
+					);
+					
+				-- SETS -- 
+				
+				-- Changes the name of the Artist object --
+				public setName : String ==> ()
+					setName(n) == (name := n; return);
+				
+				-- Changes the location of the Artist object --
+				public setLocation : Location ==> ()
+					setLocation(l) == (location := l; return);
+				
+				-- Changes the description of the Artist object --
+				public setDescription : String ==> ()
+					setDescription(d) == (description := d; return);
+				
+			-- AUXILIARY FUNCTIONS --	
+			
+			-- ADDS --
+			
+			-- Add a music to Musics in an Artist object --
+			public addMusic : String ==> ()
+				addMusic(m) == musics := {m} union musics
+				pre m not in set musics
+				post musics = {m} union musics~;
+			
+			-- Add an instrument to Instruments in an Artist object --
+			public addInstrument : String ==> ()
+				addInstrument(i) == instruments := {i} union instruments
+				pre (i not in set instruments) and (card instruments < 5)
+				post instruments = {i} union instruments~;
+				
+			-- Add a genre to Genres in an Artist object --
+			public addGenre : String ==> ()
+				addGenre(g) == genres := {g} union genres
+				pre (g not in set genres) and (card genres < 5)
+				post genres = {g} union genres~;
+				
+			-- Add a show to Shows in an Artist object --
+			public addShow : Show ==> bool
+				addShow(nshow) == (
+					for all s in set shows do
+					(
+						if(nshow.getEndDate().laterTime(s.getStartDate()) and s.getEndDate().laterTime(nshow.getStartDate()))
+							then return false;
+					);
+					shows := {nshow} union shows;
+					nshow.getVenue().addShow(nshow);
+					return true
+				);
+
+			-- REMOVES --
+			
+			-- Removes a music from Musics in an Artist object --
+			public removeMusic : String ==> ()
+				removeMusic(m) == (musics := musics \ {m}; return)
+				pre m in set musics
+				post {} = {m} inter musics;
+				
+			-- Removes an instrument from Instruments in an Artist object --
+			public removeInstrument : String ==> ()
+				removeInstrument(i) == (instruments := instruments \ {i}; return)
+				pre i in set instruments
+				post {} = {i} inter instruments;
+				
+			-- Removes a genre from Genres in an Artist object --
+			public removeGenre : String ==> ()
+				removeGenre(g) == (genres := genres \ {g}; return)
+				pre g in set genres
+				post {} = {g} inter genres;
+				
+			-- Removes a show from Shows in an Artist object --
+			public removeShow : Show ==> ()
+				removeShow(s) == (
+					shows := shows \ {s};
+					s.getVenue().removeShow(s);
+					return
+				)
+				pre s in set shows
+				post {} = {s} inter shows;
+			
+end Artist
+
+-- TEST CLASS FOR ARTIST CLASS --
+
+class ArtistTest is subclass of TestSuiteJyve
+	instance variables
+			d1 : DateTime := new DateTime(2017, 12, 01, 23, 30);
+			d2 : DateTime := new DateTime(2017, 12, 02, 04, 00);
+			d3 : DateTime := new DateTime(2017, 12, 01, 23, 45);
+			d4 : DateTime := new DateTime(2017, 12, 02, 03, 30);
+			l1 : Location := new Location("New York", "New York");
+			l2 : Location := new Location("Illinois", "Chicago");
+			a1 : Artist := new Artist("Father John Misty", l1, "Too cool for descriptions.", {"Indie"}, {"Piano"});
+			a2 : Artist := new Artist("St. Vincent", l1, "Coolio", {}, {});
+			v1 : Venue := new Venue("The Den", l1, "Cool place to chill.");
+			s1 : Show := new Show(d1, d2, v1, "Concert up buds!");
+			s2 : Show := new Show(d3, d4, v1, "Concert down buds!");
+		
+	operations
+			-- ADDS --
+			private testaddMusic: () ==> ()
+				testaddMusic() == (
+					a1.addMusic("I Love You, Honeybear");
+					a2.addMusic("Pure Comedy");
+				);
+				
+			private testaddInstrument: () ==> ()
+				testaddInstrument() == (
+					a1.addInstrument("Guitar");
+					a2.addInstrument("Piano");
+				);
+			
+			private testaddGenre: () ==> ()
+				testaddGenre() == (
+					a1.addGenre("Pop");
+					a2.addGenre("Indie");
+				);
+				
+			private testaddShow: () ==> ()
+				testaddShow() == (
+					assertEqual(a1.addShow(s1), true);
+					assertEqual(a1.addShow(s2), false);
+					assertEqual(a2.addShow(s2), true);
+				);
+			
+			-- GETS --
+			private testgetName: () ==> ()
+				testgetName() == (
+					assertEqual(a1.getName(), "Father John Misty");
+					assertEqual(a2.getName(), "St. Vincent");
+				);
+			
+			private testgetLocation: () ==> ()
+				testgetLocation() == (
+					assertEqual(a1.getLocation(), l1);
+					assertEqual(a2.getLocation(), l1);
+				);
+			
+			private testgetDescription: () ==> ()
+				testgetDescription() == (
+					assertEqual(a1.getDescription(), "Too cool for descriptions.");
+					assertEqual(a2.getDescription(), "Coolio");
+				);
+			
+			private testgetGenres: () ==> ()
+				testgetGenres() == (
+					assertEqual(a1.getGenres(), {"Indie", "Pop"});
+					assertEqual(a2.getGenres(), {"Indie"});
+				);	
+			
+			private testgetInstruments: () ==> ()
+				testgetInstruments() == (
+					assertEqual(a1.getInstruments(), {"Piano", "Guitar"});
+					assertEqual(a2.getInstruments(), {"Piano"});
+				);
+				
+			private testgetMusics: () ==> ()
+				testgetMusics() == (
+					assertEqual(a1.getMusics(), {"I Love You, Honeybear"});
+					assertEqual(a2.getMusics(), {"Pure Comedy"});
+				);
+			 
+			private testgetShows: () ==> ()
+				testgetShows() == (
+					assertEqual(a1.getShows(), {s1});
+					assertEqual(a2.getShows(), {s2});
+				);
+				
+			private testgetShow: () ==> ()
+				testgetShow() == (
+					assertEqual(a1.getShow("The Den", 2017, 12, 01, 23, 30), s1);
+					assertEqual(a2.getShow("The Den", 2017, 12, 01, 23, 45), s2);
+					assertEqual(a1.getShow("Dummy Venue", 2018, 12, 12, 12, 12), nil);
+				);
+				
+			-- SETS --
+			private testsetName: () ==> ()
+				testsetName() == (
+					a1.setName("Nuno Silva");
+					a2.setName("Mário Esteves");
+				);
+			
+			private testsetLocation: () ==> ()
+				testsetLocation() == (
+					a1.setLocation(l2);
+					a2.setLocation(l2);
+				);
+			
+			private testsetDescription: () ==> ()
+				testsetDescription() == (
+					a1.setDescription("Best musician on Earth");
+					a2.setDescription("Massive weeb");
+				);
+				
+			-- REMOVE --
+			private testremoveMusic: () ==> ()
+				testremoveMusic() == (
+					a1.removeMusic("I Love You, Honeybear");
+					a2.removeMusic("Pure Comedy");
+				);
+			
+			private testremoveInstrument: () ==> ()
+				testremoveInstrument() == (
+					a1.removeInstrument("Guitar");
+					a2.removeInstrument("Piano");
+				);
+			
+			private testremoveGenre: () ==> ()
+				testremoveGenre() == (
+					a1.removeGenre("Pop");
+					a2.removeGenre("Indie");
+				);
+			
+			private testremoveShow: () ==> ()
+				testremoveShow() == (
+					a1.removeShow(s1);
+					a2.removeShow(s2);
+				);
+			
+			public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl test : ArtistTest := new ArtistTest();
+        test.testaddMusic();
+        test.testaddInstrument();
+        test.testaddGenre();
+        test.testaddShow();
+        test.testgetName();
+	      test.testgetLocation();
+	      test.testgetDescription();
+	      test.testgetGenres();
+	      test.testgetInstruments();
+	      test.testgetMusics();
+	      test.testgetShows();
+	      test.testgetShow();
+	      test.testsetName();
+	      test.testsetLocation();
+	      test.testsetDescription();
+	      test.testremoveMusic();
+	      test.testremoveInstrument();
+	      test.testremoveGenre();
+	      test.testremoveShow();
+	    );
+	
+end ArtistTest

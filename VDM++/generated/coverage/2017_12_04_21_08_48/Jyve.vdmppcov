@@ -1,0 +1,279 @@
+class Jyve
+	types
+			public String = seq of char;
+
+	instance variables
+			-- Every artist on Jyve --
+			private artists : set of Artist := {};
+			
+			-- Every band on Jyve --
+			private bands : set of Band := {};
+			
+			-- Every venue on Jyve --
+			private venues : set of Venue := {};
+
+	operations
+			-- GETS --
+			
+			-- Returns all the artists on Jyve --
+			public getArtists : () ==> set of Artist
+				getArtists() == (return artists);
+				
+			-- Returns all the bands on Jyve --
+			public getBands : () ==> set of Band
+				getBands() == (return bands);
+				
+			-- Returns all the venues on Jyve --
+			public getVenues : () ==> set of Venue
+				getVenues() == (return venues);
+				
+			-- Returns the artist on Jyve by name --
+			public getArtistbyName : String ==> [Artist]
+				getArtistbyName(an) == (
+					for all a in set artists do
+						if(an = a.getName())
+							then return a;
+					return nil
+				);
+				
+			-- Return the band on Jyve by name --
+			public getBandbyName : String ==> [Band]
+				getBandbyName(bn) == (
+					for all b in set bands do
+						if(bn = b.getName())
+							then return b;
+					return nil
+				);
+				
+			-- Return the venue on Jyve by name --
+			public getVenuebyName : String ==> [Venue]
+				getVenuebyName(vn) == (
+					for all v in set venues do
+						if(vn = v.getName())
+							then return v;
+					return nil
+				);
+				
+			-- Returns the artist(s) and/or band(s) associated to a Show object --
+			public getArtBandbyShow : Show ==> String
+				getArtBandbyShow(ss) == (
+					for all a in set artists do
+						for all as in set a.getShows() do
+							if(as = ss)
+								then return a.getName();
+					
+					for all b in set bands do
+						for all bs in set b.getShows() do
+							if (bs = ss)
+								then return b.getName();
+					
+					return [];
+				);
+						
+				
+			-- AUXILIARY FUNCTIONS --
+			
+			-- Add an artist to Jyve --
+			public addArtist: Artist ==> ()
+				addArtist(a) == artists := {a} union artists
+				pre a not in set artists
+				post artists = {a} union artists~;
+				
+			-- Add a band to Jyve --
+			public addBand: Band ==> ()
+				addBand(b) == bands := {b} union bands
+				pre b not in set bands
+				post bands = {b} union bands~;
+				
+			-- Add a venue to Jyve --
+			public addVenue : Venue ==> ()
+				addVenue(v) == venues := {v} union venues
+				pre v not in set venues
+				post venues = {v} union venues~;
+				
+			-- Search for an artist on Jyve --
+			-- Receives a string and returns the Artist object with the name or description equal to the string. --
+			public searchArtist: String ==> set of Artist
+			searchArtist(sa)==
+			(
+				dcl res: set of Artist:= {};
+					for all a in set artists do
+						if (a.getName() = sa or a.getDescription() = sa)
+							then (res:= {a} union res);
+				return res			
+			)
+			pre sa <> [];
+			
+			-- Search for a band on Jyve --
+			-- Receives a string and returns the Band object with the name or description equal to the string. --
+			public searchBand: String ==> set of Band
+			searchBand(sb)==
+			(
+				dcl res: set of Band:= {};
+					for all b in set bands do
+						if (b.getName() = sb or b.getDescription() = sb)
+							then (res:= {b} union res);
+				return res			
+			)
+			pre sb <> [];
+			
+			-- Search for a venue on Jyve --
+			-- Receives a string and returns the Venue object with the name or description equal to the string. --
+			public searchVenue: String ==> set of Venue
+			searchVenue(sv)==
+			(
+				dcl res: set of Venue:= {};
+					for all v in set venues do
+						if (v.getName() = sv or v.getDescription() = sv)
+							then (res:= {v} union res);
+				return res			
+			)
+			pre sv <> [];
+			
+			-- Search for a show on Jyve --
+			-- Receives a string and returns the Show object with the description equal to the string. --
+			public searchShow: String ==> set of Show
+			searchShow(ss)==
+			(
+				dcl res: set of Show:= {};
+					for all v in set venues do
+						for all s in set v.getShows() do
+							if (s.getDescription() = ss)
+								then (res:= {s} union res);
+				return res			
+			)
+			pre ss <> [];
+
+end Jyve
+
+-- TEST CLASS FOR JYVE CLASS --
+
+class JyveTest is subclass of TestSuiteJyve
+	instance variables
+			j : Jyve := new Jyve();
+			d1 : DateTime := new DateTime(2017, 12, 01, 23, 30);
+			d2 : DateTime := new DateTime(2017, 12, 02, 04, 00);
+			d3 : DateTime := new DateTime(2017, 12, 01, 23, 45);
+			d4 : DateTime := new DateTime(2017, 12, 02, 03, 30);
+			l1 : Location := new Location("New York", "New York");
+			l2 : Location := new Location("Illinois", "Chicago");
+			a1 : Artist := new Artist("Father John Misty", l1, "Too cool for descriptions.", {}, {});
+			a2 : Artist := new Artist("St. Vincent", l1, "Coolio", {}, {});
+			b1 : Band := new Band("Father John Misty's Band", l1, "Cool band.", {"Indie"}, {a1});
+			b2 : Band := new Band("Superband", l1, "Super band with two awesome people!", {}, {a2});
+			v1 : Venue := new Venue("The Den", l1, "Cool place to chill.");
+			v2 : Venue := new Venue("The Dank", l1, "Dank place to chill.");
+			s1 : Show := new Show(d1, d2, v1, "Concert up buds!");
+			s2 : Show := new Show(d3, d4, v1, "Concert down buds!");
+			
+	operations
+			-- ADDS --
+			private testaddArtist: () ==> ()
+				testaddArtist() == (
+					j.addArtist(a1);
+					j.addArtist(a2);
+				);
+				
+			private testaddBand: () ==> ()
+				testaddBand() == (
+					j.addBand(b1);
+					j.addBand(b2);
+				);
+				
+			private testaddVenue: () ==> ()
+				testaddVenue() == (
+					j.addVenue(v1);
+					j.addVenue(v2);
+				);
+
+			-- GETS --
+			private testgetArtists: () ==> ()
+				testgetArtists() == (
+					assertEqual(j.getArtists(), {a1, a2});
+				);
+				
+			private testgetBands: () ==> ()
+				testgetBands() == (
+					assertEqual(j.getBands(), {b1, b2});
+				);
+			
+			private testgetVenues: () ==> ()
+				testgetVenues() == (
+					assertEqual(j.getVenues(), {v1, v2});
+			);
+			
+			private testgetArtistbyName: () ==> ()
+				testgetArtistbyName() == (
+					assertEqual(j.getArtistbyName("Father John Misty"), a1);
+					assertEqual(j.getArtistbyName("St. Vincent"), a2);
+					assertEqual(j.getArtistbyName("Me"), nil);
+				);
+			
+			private testgetBandbyName: () ==> ()
+				testgetBandbyName() == (
+					assertEqual(j.getBandbyName("Father John Misty's Band"), b1);
+					assertEqual(j.getBandbyName("Superband"), b2);
+					assertEqual(j.getBandbyName("You"), nil);
+				);
+			
+			private testgetVenuebyName: () ==> ()
+				testgetVenuebyName() == (
+					assertEqual(j.getVenuebyName("The Den"), v1);
+					assertEqual(j.getVenuebyName("The Dank"), v2);
+					assertEqual(j.getVenuebyName("What"), nil);
+				);
+				
+			private testgetArtBandbyShow: () ==> ()
+				testgetArtBandbyShow() == (
+					if(a1.addShow(s1))
+						then assertEqual(j.getArtBandbyShow(s1), "Father John Misty");
+					if(b1.addShow(s2))
+						then assertEqual(j.getArtBandbyShow(s2), "Father John Misty's Band");
+				);
+			
+			-- SEARCHES --
+			private testsearchArtist: () ==> ()
+				testsearchArtist() == (
+					assertEqual(j.searchArtist("Father John Misty"), {a1});
+					assertEqual(j.searchArtist("Coolio"), {a2});
+				);
+			
+			private testsearchBand: () ==> ()
+				testsearchBand() == (
+					assertEqual(j.searchBand("Cool band."), {b1});
+					assertEqual(j.searchBand("Superband"), {b2});
+				);
+				
+			private testsearchVenue: () ==> ()
+				testsearchVenue() == (
+					assertEqual(j.searchVenue("Cool place to chill."), {v1});
+					assertEqual(j.searchVenue("The Dank"), {v2});
+				);
+				
+			private testsearchShow: () ==> ()
+				testsearchShow() == (
+					assertEqual(j.searchShow("Concert up buds!"), {s1});
+					assertEqual(j.searchShow("Concert down buds!"), {s2});
+				);
+				
+			public static main: () ==> ()
+	    	main() ==
+	    	(
+	    		dcl test : JyveTest := new JyveTest();
+        	test.testaddArtist();
+        	test.testaddBand();
+        	test.testaddVenue();
+        	test.testgetArtists();
+        	test.testgetBands();
+        	test.testgetVenues();
+        	test.testgetArtistbyName();
+        	test.testgetBandbyName();
+        	test.testgetVenuebyName();
+        	test.testgetArtBandbyShow();
+        	test.testsearchArtist();
+        	test.testsearchBand();
+        	test.testsearchVenue();
+        	test.testsearchShow();
+	    	);
+
+end JyveTest
