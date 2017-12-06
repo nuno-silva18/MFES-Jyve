@@ -74,47 +74,47 @@ public class Artist {
 
     for (Iterator iterator_1 = shows.iterator(); iterator_1.hasNext(); ) {
       Show s = (Show) iterator_1.next();
-      Boolean andResult_1 = false;
+      Boolean andResult_2 = false;
 
       if (Utils.equals(s.getVenue().getName(), vn)) {
-        Boolean andResult_2 = false;
+        Boolean andResult_3 = false;
 
         if (Utils.equals(s.getStartDate().getYear(), sy)) {
-          Boolean andResult_3 = false;
+          Boolean andResult_4 = false;
 
           if (Utils.equals(s.getStartDate().getMonth(), sm)) {
-            Boolean andResult_4 = false;
+            Boolean andResult_5 = false;
 
             if (Utils.equals(s.getStartDate().getDay(), sd)) {
-              Boolean andResult_5 = false;
+              Boolean andResult_6 = false;
 
               if (Utils.equals(s.getStartDate().getHour(), stime)) {
                 if (Utils.equals(s.getStartDate().getMinutes(), sminutes)) {
-                  andResult_5 = true;
+                  andResult_6 = true;
                 }
               }
 
-              if (andResult_5) {
-                andResult_4 = true;
+              if (andResult_6) {
+                andResult_5 = true;
               }
             }
 
-            if (andResult_4) {
-              andResult_3 = true;
+            if (andResult_5) {
+              andResult_4 = true;
             }
           }
 
-          if (andResult_3) {
-            andResult_2 = true;
+          if (andResult_4) {
+            andResult_3 = true;
           }
         }
 
-        if (andResult_2) {
-          andResult_1 = true;
+        if (andResult_3) {
+          andResult_2 = true;
         }
       }
 
-      if (andResult_1) {
+      if (andResult_2) {
         return s;
       }
     }
@@ -158,15 +158,15 @@ public class Artist {
 
     for (Iterator iterator_2 = shows.iterator(); iterator_2.hasNext(); ) {
       Show s = (Show) iterator_2.next();
-      Boolean andResult_8 = false;
+      Boolean andResult_9 = false;
 
       if (nshow.getEndDate().laterTime(s.getStartDate())) {
         if (s.getEndDate().laterTime(nshow.getStartDate())) {
-          andResult_8 = true;
+          andResult_9 = true;
         }
       }
 
-      if (andResult_8) {
+      if (andResult_9) {
         return false;
       }
     }

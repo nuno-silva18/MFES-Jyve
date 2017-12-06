@@ -6,6 +6,12 @@ class DateTime
 			private hour : nat;
 			private minutes : nat;
 			
+			inv year > 0;
+			inv month > 0 and month <= 12;
+			inv day > 0 and day <= 31;
+			inv hour < 24;
+			inv minutes < 60;
+			
 	operations		
 			-- Creates a new Date object given its year, month and day --
 			public DateTime: nat * nat * nat * nat * nat ==> DateTime

@@ -17,9 +17,9 @@ class Band
 
 	operations
 			-- Create a new Band with all given parameters
-			public Band: String * Location * String * set of String * set of Artist ==> Band
+			public Band: String * [Location] * String * set of String * set of Artist ==> Band
 				Band(n, l, d, setg, seta) == (name := n; location := l; description := d; genres := setg; members := seta)
-				pre n <> [] and seta <> {};
+				pre (n <> []) and (l <> nil) and (seta <> {});
 				
 				-- GETS --
 				
@@ -68,8 +68,9 @@ class Band
 					setName(n) == (name := n; return);
 				
 				-- Changes the location of the Band object --
-				public setLocation : Location ==> ()
-					setLocation(l) == (location := l; return);
+				public setLocation : [Location] ==> ()
+					setLocation(l) == (location := l; return)
+					pre l <> nil;
 				
 				-- Changes the description of the Band object --
 				public setDescription : String ==> ()
@@ -119,7 +120,7 @@ class Band
 				-- Removes an Artist from Members in a Band object --
 				public removeMember : Artist ==> ()
 					removeMember(a) == (members := members \ {a}; return)
-					pre a in set members
+					pre (a in set members) and (card members > 1)
 					post {} = {a} inter members;
 				
 				-- Removes a genre from Genres in a Band object --

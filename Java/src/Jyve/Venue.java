@@ -51,49 +51,49 @@ public class Venue {
       final Number stime,
       final Number sminutes) {
 
-    for (Iterator iterator_17 = shows.iterator(); iterator_17.hasNext(); ) {
-      Show s = (Show) iterator_17.next();
-      Boolean andResult_25 = false;
+    for (Iterator iterator_19 = shows.iterator(); iterator_19.hasNext(); ) {
+      Show s = (Show) iterator_19.next();
+      Boolean andResult_31 = false;
 
       if (Utils.equals(s.getVenue().getName(), vn)) {
-        Boolean andResult_26 = false;
+        Boolean andResult_32 = false;
 
         if (Utils.equals(s.getStartDate().getYear(), sy)) {
-          Boolean andResult_27 = false;
+          Boolean andResult_33 = false;
 
           if (Utils.equals(s.getStartDate().getMonth(), sm)) {
-            Boolean andResult_28 = false;
+            Boolean andResult_34 = false;
 
             if (Utils.equals(s.getStartDate().getDay(), sd)) {
-              Boolean andResult_29 = false;
+              Boolean andResult_35 = false;
 
               if (Utils.equals(s.getStartDate().getHour(), stime)) {
                 if (Utils.equals(s.getStartDate().getMinutes(), sminutes)) {
-                  andResult_29 = true;
+                  andResult_35 = true;
                 }
               }
 
-              if (andResult_29) {
-                andResult_28 = true;
+              if (andResult_35) {
+                andResult_34 = true;
               }
             }
 
-            if (andResult_28) {
-              andResult_27 = true;
+            if (andResult_34) {
+              andResult_33 = true;
             }
           }
 
-          if (andResult_27) {
-            andResult_26 = true;
+          if (andResult_33) {
+            andResult_32 = true;
           }
         }
 
-        if (andResult_26) {
-          andResult_25 = true;
+        if (andResult_32) {
+          andResult_31 = true;
         }
       }
 
-      if (andResult_25) {
+      if (andResult_31) {
         return s;
       }
     }
@@ -133,15 +133,15 @@ public class Venue {
   public void cancelShow(final Show s, final Jyve j) {
 
     String artbandname = j.getArtBandbyShow(s);
-    for (Iterator iterator_18 = j.getArtists().iterator(); iterator_18.hasNext(); ) {
-      Artist a = (Artist) iterator_18.next();
+    for (Iterator iterator_20 = j.getArtists().iterator(); iterator_20.hasNext(); ) {
+      Artist a = (Artist) iterator_20.next();
       if (!(Utils.equals(j.getArtistbyName(artbandname), null))) {
         a.removeShow(s);
         return;
 
       } else {
-        for (Iterator iterator_19 = j.getBands().iterator(); iterator_19.hasNext(); ) {
-          Band b = (Band) iterator_19.next();
+        for (Iterator iterator_21 = j.getBands().iterator(); iterator_21.hasNext(); ) {
+          Band b = (Band) iterator_21.next();
           if (!(Utils.equals(j.getBandbyName(artbandname), null))) {
             b.removeShow(s);
             return;

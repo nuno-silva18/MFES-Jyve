@@ -726,7 +726,8 @@ public class Menu {
 	
 	private static void showsMenu() {
 		Scanner scan = new Scanner(System.in);
-					
+		
+		System.out.println("The currently schedule shows are: ");
 		if(jyve.getVenues().size() > 0) {
 			for(Iterator<Venue> it = jyve.getVenues().iterator(); it.hasNext();) {
 				Venue venue = it.next();
@@ -745,8 +746,8 @@ public class Menu {
 			System.out.println("The application doesn't have any venues and, thus, no shows yet :(");
 		}
 		
-		System.out.println("To continue please insert the number corresponding to the menu option followed by Enter:");
 		System.out.println("Average number of shows per artist/band on Jyve: " + jyve.avgShowPerArtistBand());
+		System.out.println("To continue please insert the number corresponding to the menu option followed by Enter:");
 		System.out.println("0. Return to main menu");
 		
 		int tempState = scan.nextInt();

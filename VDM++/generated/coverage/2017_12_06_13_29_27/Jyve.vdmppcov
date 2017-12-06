@@ -144,7 +144,7 @@ class Jyve
 			pre ss <> [];
 			
 			
-			-- Returns the average number of shows per artist on tje Jyve application --
+			-- Returns the average number of shows per artist/band on the Jyve application --
 			public avgShowPerArtistBand: () ==> real
 				avgShowPerArtistBand() == 
 					(

@@ -3,16 +3,21 @@ class Show
 			public String = seq of char;
 
 	instance variables
-			private startdate : DateTime;
-			private enddate : DateTime;
-			private venue : Venue;
+			private startdate : [DateTime];
+			private enddate : [DateTime];
+			private venue : [Venue];
 			private description : String;
+			
+			inv startdate <> nil;
+			inv enddate <> nil;
+			inv enddate.laterTime(startdate);
+			inv venue <> nil;
 			
 	operations
 			-- Create a Show object with all given parameters for an Artist or Band object --
-			public Show : DateTime * DateTime * Venue * String ==> Show
+			public Show : [DateTime] * [DateTime] * [Venue] * String ==> Show
 				Show(dts, dte, v, desc) == (startdate := dts; enddate := dte; venue := v; description := desc; return self)
-				pre dte.laterTime(dts);
+				pre dts <> nil and dte <> nil and dte.laterTime(dts) and venue <> nil;
 			
 			-- GETS --
 			

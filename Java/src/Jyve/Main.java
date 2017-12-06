@@ -7,8 +7,7 @@ import org.overture.codegen.runtime.*;
 public class Main {
   public static void Run() {
 
-	  Menu.main(null);
-    
+    TestJyve.main();
   }
 
   public Main() {}

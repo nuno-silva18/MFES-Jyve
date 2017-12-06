@@ -17,9 +17,9 @@ class Artist
 
 	operations
 			-- Create a new Artist with all given parameters
-			public Artist: String * Location * String * set of String * set of String ==> Artist
+			public Artist: String * [Location] * String * set of String * set of String ==> Artist
 				Artist(n, l, d, setg, seti) == (name := n; location := l; description := d; genres := setg; instruments := seti)
-				pre n <> [];
+				pre (n <> []) and (l <> nil);
 				
 				-- GETS --
 				
@@ -68,8 +68,9 @@ class Artist
 					setName(n) == (name := n; return);
 				
 				-- Changes the location of the Artist object --
-				public setLocation : Location ==> ()
-					setLocation(l) == (location := l; return);
+				public setLocation : [Location] ==> ()
+					setLocation(l) == (location := l; return)
+					pre l <> nil;
 				
 				-- Changes the description of the Artist object --
 				public setDescription : String ==> ()
@@ -94,7 +95,7 @@ class Artist
 			-- Add a genre to Genres in an Artist object --
 			public addGenre : String ==> ()
 				addGenre(g) == genres := {g} union genres
-				pre g not in set genres
+				pre (g not in set genres) and (card genres < 5)
 				post genres = {g} union genres~;
 				
 			-- Add a show to Shows in an Artist object --

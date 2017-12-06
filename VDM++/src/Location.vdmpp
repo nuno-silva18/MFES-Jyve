@@ -5,6 +5,9 @@ class Location
 	instance variables
 			private city : String;
 			private state : String;
+			
+			inv city <> [];
+			inv state <> [];
 
 	operations
 			-- Create a new Location object with all necessary parameters --
@@ -26,11 +29,13 @@ class Location
 			
 			-- Changes the name of the city in the Location object --
 			public setCity: String ==> ()
-				setCity(c) == (city := c; return);
+				setCity(c) == (city := c; return)
+				pre c <> [];
 			
 			-- Changes the name of the state in the Location object --
 			public setState: String ==> ()
-				setState(s) == (state := s; return);
+				setState(s) == (state := s; return)
+				pre s <> [];
 			
 end Location
 

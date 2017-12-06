@@ -74,47 +74,47 @@ public class Band {
 
     for (Iterator iterator_3 = shows.iterator(); iterator_3.hasNext(); ) {
       Show s = (Show) iterator_3.next();
-      Boolean andResult_10 = false;
+      Boolean andResult_12 = false;
 
       if (Utils.equals(s.getVenue().getName(), vn)) {
-        Boolean andResult_11 = false;
+        Boolean andResult_13 = false;
 
         if (Utils.equals(s.getStartDate().getYear(), sy)) {
-          Boolean andResult_12 = false;
+          Boolean andResult_14 = false;
 
           if (Utils.equals(s.getStartDate().getMonth(), sm)) {
-            Boolean andResult_13 = false;
+            Boolean andResult_15 = false;
 
             if (Utils.equals(s.getStartDate().getDay(), sd)) {
-              Boolean andResult_14 = false;
+              Boolean andResult_16 = false;
 
               if (Utils.equals(s.getStartDate().getHour(), stime)) {
                 if (Utils.equals(s.getStartDate().getMinutes(), sminutes)) {
-                  andResult_14 = true;
+                  andResult_16 = true;
                 }
               }
 
-              if (andResult_14) {
-                andResult_13 = true;
+              if (andResult_16) {
+                andResult_15 = true;
               }
             }
 
-            if (andResult_13) {
-              andResult_12 = true;
+            if (andResult_15) {
+              andResult_14 = true;
             }
           }
 
-          if (andResult_12) {
-            andResult_11 = true;
+          if (andResult_14) {
+            andResult_13 = true;
           }
         }
 
-        if (andResult_11) {
-          andResult_10 = true;
+        if (andResult_13) {
+          andResult_12 = true;
         }
       }
 
-      if (andResult_10) {
+      if (andResult_12) {
         return s;
       }
     }
@@ -158,15 +158,15 @@ public class Band {
 
     for (Iterator iterator_4 = shows.iterator(); iterator_4.hasNext(); ) {
       Show s = (Show) iterator_4.next();
-      Boolean andResult_16 = false;
+      Boolean andResult_18 = false;
 
       if (nshow.getEndDate().laterTime(s.getStartDate())) {
         if (s.getEndDate().laterTime(nshow.getStartDate())) {
-          andResult_16 = true;
+          andResult_18 = true;
         }
       }
 
-      if (andResult_16) {
+      if (andResult_18) {
         return false;
       }
     }
