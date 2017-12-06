@@ -84,7 +84,7 @@ class Venue
 		 								then (b.removeShow(s); return);
 		 				
 		 				return
-		 		);			
+		 		);
 		 	
 end Venue
 

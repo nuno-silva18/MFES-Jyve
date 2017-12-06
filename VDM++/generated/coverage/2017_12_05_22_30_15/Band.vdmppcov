@@ -13,6 +13,7 @@ class Band
 			
 			inv location <> nil;
 			inv members <> {};
+			inv card genres < 5;
 
 	operations
 			-- Create a new Band with all given parameters
@@ -118,7 +119,7 @@ class Band
 				-- Removes an Artist from Members in a Band object --
 				public removeMember : Artist ==> ()
 					removeMember(a) == (members := members \ {a}; return)
-					pre a in set members and card members > 1
+					pre a in set members
 					post {} = {a} inter members;
 				
 				-- Removes a genre from Genres in a Band object --

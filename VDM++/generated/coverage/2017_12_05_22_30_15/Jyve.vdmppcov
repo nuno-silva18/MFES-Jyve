@@ -69,7 +69,6 @@ class Jyve
 					
 					return [];
 				);
-						
 				
 			-- AUXILIARY FUNCTIONS --
 			
@@ -143,6 +142,31 @@ class Jyve
 				return res			
 			)
 			pre ss <> [];
+			
+			
+			-- Returns the average number of shows per artist on tje Jyve application --
+			public avgShowPerArtistBand: () ==> real
+				avgShowPerArtistBand() == 
+					(
+						dcl nshows : int := 0;
+						dcl b : bool := false;
+						dcl tartb : nat := 0;
+						for all a in set artists do 
+							(
+								b := true;
+								nshows := nshows + card a.getShows();
+								tartb := tartb + 1;
+							);
+						for all band in set bands do
+							(
+								b := true;
+								nshows := nshows + card band.getShows();
+								tartb := tartb + 1;
+							);
+							if (not b)
+								then return -1
+									else return nshows / tartb;
+					);
 
 end Jyve
 
@@ -255,6 +279,11 @@ class JyveTest is subclass of TestSuiteJyve
 					assertEqual(j.searchShow("Concert up buds!"), {s1});
 					assertEqual(j.searchShow("Concert down buds!"), {s2});
 				);
+			
+			private testavgShowPerArtistBand: () ==> ()
+				testavgShowPerArtistBand() == (
+					assertEqual(j.avgShowPerArtistBand(), 0.5);
+				);
 				
 			public static main: () ==> ()
 	    	main() ==
@@ -274,6 +303,7 @@ class JyveTest is subclass of TestSuiteJyve
         	test.testsearchBand();
         	test.testsearchVenue();
         	test.testsearchShow();
+        	test.testavgShowPerArtistBand();
 	    	);
 
 end JyveTest

@@ -5,7 +5,7 @@ class DateTime
 			private day : nat;
 			private hour : nat;
 			private minutes : nat;
-
+			
 	operations		
 			-- Creates a new Date object given its year, month and day --
 			public DateTime: nat * nat * nat * nat * nat ==> DateTime
