@@ -3,20 +3,19 @@ class Venue
 			public String = seq of char;
 
 	instance variables
-			private name : [String];
-			private location : [Location];
+			private name : String;
+			private location : Location;
 			private description : String;
 			private shows: set of Show := {};
 			
 			inv name <> [];
-			inv location <> nil;
 
 	operations
 			
 			-- Create a Venue object with all given parameters --
-			public Venue: [String] * [Location] * String ==> Venue
+			public Venue: String * Location * String ==> Venue
 				Venue(n, l, d) == (name := n; location := l; description := d; return self)
-				pre n <> [] and l <> nil;
+				pre n <> [];
 			
 			-- GETS --
 			
@@ -49,14 +48,13 @@ class Venue
 			-- SETS --
 			
 			-- Changes the name of the Venue object --
-			public setName : [String] ==> ()
+			public setName : String ==> ()
 				setName(n) == (name := n; return)
 				pre n <> [];
 				
 			-- Changes the location of the Venue object --
-			public setLocation : [Location] ==> ()
+			public setLocation : Location ==> ()
 				setLocation(l) == (location := l; return)
-				pre l <> nil;
 				
 			-- Changes the description of the Venue object --
 			public setDescription : String ==> ()

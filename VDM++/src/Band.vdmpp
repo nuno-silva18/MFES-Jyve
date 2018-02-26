@@ -4,22 +4,21 @@ class Band
 
 	instance variables
 			private name : String;
-			private location : [Location];
+			private location : Location;
 			private description : String;
 			private genres : set of String;
 			private members : set of Artist;
 			private musics : set of String := {};
 			private shows : set of Show := {};
 			
-			inv location <> nil;
 			inv members <> {};
 			inv card genres < 5;
 
 	operations
 			-- Create a new Band with all given parameters
-			public Band: String * [Location] * String * set of String * set of Artist ==> Band
+			public Band: String * Location * String * set of String * set of Artist ==> Band
 				Band(n, l, d, setg, seta) == (name := n; location := l; description := d; genres := setg; members := seta)
-				pre (n <> []) and (l <> nil) and (seta <> {});
+				pre (n <> []) and (seta <> {});
 				
 				-- GETS --
 				
@@ -68,9 +67,8 @@ class Band
 					setName(n) == (name := n; return);
 				
 				-- Changes the location of the Band object --
-				public setLocation : [Location] ==> ()
-					setLocation(l) == (location := l; return)
-					pre l <> nil;
+				public setLocation : Location ==> ()
+					setLocation(l) == (location := l; return);
 				
 				-- Changes the description of the Band object --
 				public setDescription : String ==> ()

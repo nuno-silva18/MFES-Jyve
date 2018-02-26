@@ -4,22 +4,21 @@ class Artist
 
 	instance variables
 			private name : String;
-			private location : [Location];
+			private location : Location;
 			private description : String;
 			private genres : set of String;
 			private instruments : set of String;
 			private musics : set of String := {};
 			private shows : set of Show := {};
 			
-			inv location <> nil;
 			inv card genres < 6;
 			inv card instruments < 6;
 
 	operations
 			-- Create a new Artist with all given parameters
-			public Artist: String * [Location] * String * set of String * set of String ==> Artist
+			public Artist: String * Location * String * set of String * set of String ==> Artist
 				Artist(n, l, d, setg, seti) == (name := n; location := l; description := d; genres := setg; instruments := seti)
-				pre (n <> []) and (l <> nil);
+				pre n <> [];
 				
 				-- GETS --
 				
@@ -68,9 +67,8 @@ class Artist
 					setName(n) == (name := n; return);
 				
 				-- Changes the location of the Artist object --
-				public setLocation : [Location] ==> ()
-					setLocation(l) == (location := l; return)
-					pre l <> nil;
+				public setLocation : Location ==> ()
+					setLocation(l) == (location := l; return);
 				
 				-- Changes the description of the Artist object --
 				public setDescription : String ==> ()
